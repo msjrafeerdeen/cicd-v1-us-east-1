@@ -1,10 +1,28 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: CI CD Version 1 N.Virginia
+
+Parameters:
+  MyEnvironment:
+    Type: String
+    Default: staging
+    AllowedValues:
+      - staging
+      - production
+    Description: Environment of this stack of resources
+
+Mappings:
+  ResourcesName:
+    staging:
+      funcName: MyLambda-staging
+    production:
+      funcName: MyLambda-production
+
 Resources:
   CDDemoLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
+      FunctionName: !FindInMap [ResourcesName, !Ref MyEnvironment, funcName]
       Handler: lambda_function.lambda_handler
       Runtime: python3.6
       CodeUri: ./lambda
@@ -21,3 +39,4 @@ Resources:
       Environment:
         Variables:
           REGION: us-east-1
+          MODE: !Ref MyEnvironment
