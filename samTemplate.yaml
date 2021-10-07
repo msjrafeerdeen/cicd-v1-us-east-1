@@ -9,6 +9,7 @@ Parameters:
     AllowedValues:
       - staging
       - production
+      - dr
     Description: Environment of this stack of resources
 
 Mappings:
@@ -17,6 +18,8 @@ Mappings:
       funcName: MyLambda-staging
     production:
       funcName: MyLambda-production
+    dr:
+      funcName: MyLambda-dr
 
 Resources:
   CDDemoLambda:
